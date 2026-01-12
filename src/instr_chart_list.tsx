@@ -15,9 +15,9 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
   const [currentLoadingIndex, setCurrentLoadingIndex] = useState(0);
 
   const handleImageLoad = (panelId: number) => {
-    setLoadedImages(prev => new Set(prev).add(panelId));
+    setLoadedImages((prev: Set<number>) => new Set(prev).add(panelId));
     // Start loading the next image
-    setCurrentLoadingIndex(prev => prev + 1);
+    setCurrentLoadingIndex((prev: number) => prev + 1);
   };
 
   const handleImageClick = (imgUrl: string, panelId: number) => {
