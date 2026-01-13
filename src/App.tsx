@@ -2,12 +2,11 @@ import { useState } from 'react'
 import './App.css'
 import InstrChartList from './instr_chart_list'
 import ImageSelector from './ImageSelector'
-import { Box, Button } from '@mui/material'
-import { useQueryParam, withDefault, type QueryParamConfig } from 'use-query-params';
-import Menu from '@mui/material/Menu';
+import { Box, Stack } from '@mui/material'
+import { StringParam, useQueryParam, withDefault, type QueryParamConfig } from 'use-query-params';
 import MenuItem from '@mui/material/MenuItem';
 
-
+const DELTA_TIMES = ['7d', '2d', '1d', '6h'];
 
 export const BASE_URL = "https://www3build.keck.hawaii.edu/dashboards/kcwi-temps"
 const kcwipanels: PanelMetadata[][] = [
@@ -56,19 +55,74 @@ export interface ImageAndMetadata extends PanelMetadata {
   url: string;
 }
 
-function App() {
-  const [selectedPanel, setSelectedPanel] = useState<ImageAndMetadata | null>(null);
+import * as React from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select, { type SelectChangeEvent } from '@mui/material/Select';
+
+function InstrSelect() {
   const [instr, setInstr] = useQueryParam<Instr>('instr', withDefault(InstrParam, 'kcwi'));
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleChange = (event: SelectChangeEvent) => {
+    setInstr(event.target.value as Instr);
   };
 
+  return (
+    <Box sx={{ width: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel id="select-instr">Instrument</InputLabel>
+        <Select
+          labelId="select-instr"
+          id="select-instr"
+          value={instr}
+          label="Instrument"
+          onChange={handleChange}
+        >
+          {
+            Object.keys(panels).map((instrKey) => (
+              <MenuItem key={instrKey} value={instrKey}>{instrKey}</MenuItem>
+            ))
+          }
+        </Select>
+      </FormControl>
+    </Box>
+  );
+}
+
+function TimeRangeSelect() {
+  const [timeRange, setTimeRange] = useQueryParam<string>('timeRange', withDefault(StringParam, '2d'));
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setTimeRange(event.target.value as string);
+  };
+
+  return (
+    <Box sx={{ width: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel id="select-timeRange">Time Range</InputLabel>
+        <Select
+          labelId="select-timeRange"
+          id="select-timeRange"
+          value={timeRange}
+          label="Time Range"
+          onChange={handleChange}
+        >
+          {
+            DELTA_TIMES.map((delta) => (
+              <MenuItem key={delta} value={delta}>{delta}</MenuItem>
+            ))
+          }
+        </Select>
+      </FormControl>
+    </Box>
+  );
+}
+
+
+function App() {
+  const [selectedPanel, setSelectedPanel] = useState<ImageAndMetadata | null>(null);
+  const [instr] = useQueryParam<Instr>('instr', withDefault(InstrParam, 'kcwi'));
+  const [timeRange] = useQueryParam<string>('timeRange', withDefault(StringParam, '2d'));
 
   const panelsFlat = panels[instr].flat();
 
@@ -86,7 +140,7 @@ function App() {
     // Loop to end if at the beginning
     const newIndex = currentIndex > 0 ? currentIndex - 1 : panelsFlat.length - 1;
     const newPanelId = panelsFlat[newIndex].panelId;
-    const newImageUrl = `${BASE_URL}?panelId=${newPanelId}`;
+    const newImageUrl = `${BASE_URL}?panelId=${newPanelId}&from=${timeRange}`;
     setSelectedPanel({ title: panelsFlat[newIndex].title, panelId: newPanelId, url: newImageUrl });
   };
 
@@ -96,7 +150,7 @@ function App() {
     // Loop to beginning if at the end
     const newIndex = currentIndex < panelsFlat.length - 1 ? currentIndex + 1 : 0;
     const newPanelId = panelsFlat[newIndex].panelId;
-    const newImageUrl = `${BASE_URL}?panelId=${newPanelId}`;
+    const newImageUrl = `${BASE_URL}?panelId=${newPanelId}&from=${timeRange}`;
     setSelectedPanel({ title: panelsFlat[newIndex].title, panelId: newPanelId, url: newImageUrl });
   };
 
@@ -105,34 +159,10 @@ function App() {
 
   return (
     <Box>
-      <div>
-        <Button
-          id="basic-button"
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}
-        >
-          Instrument: {instr} 
-        </Button>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          slotProps={{
-            list: {
-              'aria-labelledby': 'basic-button',
-            },
-          }}
-        >
-          {Object.keys(panels).map((instrKey) => (
-            <MenuItem key={instrKey} onClick={() => { setInstr(instrKey as Instr); handleClose(); }}>
-              {instrKey}
-            </MenuItem>
-          ))}
-        </Menu>
-      </div>
+      <Stack direction="row" spacing={2} sx={{ padding: 2, justifyContent: 'center' }}>
+        <TimeRangeSelect />
+        <InstrSelect />
+      </Stack>
       <ImageSelector
         selectedPanel={selectedPanel}
         onClear={handleClearSelection}
