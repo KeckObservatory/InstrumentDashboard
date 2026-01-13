@@ -1,10 +1,23 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import App from './App';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const root = createRoot(
+  document.getElementById('root') as HTMLElement
+);
+root.render(
+  <BrowserRouter>
+    <QueryParamProvider adapter={ReactRouter6Adapter}>
+      <Routes>
+        <Route path="/" element={
+          <StrictMode>
+            <App />
+          </StrictMode>
+        }/>
+      </Routes>
+    </QueryParamProvider>
+  </BrowserRouter>,
+);

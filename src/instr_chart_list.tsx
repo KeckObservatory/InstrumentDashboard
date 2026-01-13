@@ -3,7 +3,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
-import { panels, BASE_URL } from './App';
+import { panels, BASE_URL, type Instr, InstrParam } from './App';
+import { useQueryParam, withDefault } from 'use-query-params';
 
 
 interface InstrChartListProps {
@@ -13,6 +14,7 @@ interface InstrChartListProps {
 export default function InstrChartList({ onImageClick }: InstrChartListProps) {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const [currentLoadingIndex, setCurrentLoadingIndex] = useState(0);
+  const [instr] = useQueryParam<Instr>('instr', withDefault(InstrParam, 'kcwi'));
 
   const handleImageLoad = (panelId: number) => {
     setLoadedImages((prev: Set<number>) => new Set(prev).add(panelId));
@@ -28,7 +30,7 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
   return (
     <Box>
       {
-        panels.map((panelGroup, panelGroupIndex) => {
+        panels[instr].map((panelGroup, panelGroupIndex) => {
           const images = panelGroup.map((panel, index) => {
             const imgUrl = `${BASE_URL}?panelId=${panel.panelId}`
             const isLoaded = loadedImages.has(panel.panelId);
