@@ -5,15 +5,14 @@ import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
-const root = createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <BrowserRouter>
-    <QueryParamProvider adapter={ReactRouter6Adapter}>
-      <StrictMode>
-        <App />
-      </StrictMode>
-    </QueryParamProvider>
-  </BrowserRouter>,
-);
+createRoot(document.getElementById('root')!).render(
+  <>
+    <StrictMode>
+      <BrowserRouter>
+        <QueryParamProvider adapter={ReactRouter6Adapter}>
+          <App />
+        </QueryParamProvider>
+      </BrowserRouter>
+    </StrictMode>
+  </>
+)
