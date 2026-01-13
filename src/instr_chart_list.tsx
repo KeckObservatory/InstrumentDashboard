@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import { panels, BASE_URL, type Instr, InstrParam } from './App';
@@ -72,6 +73,7 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
                   />
                 </Box>
               )}
+              <ImageListItemBar title={panel.title} position="top" />
             </ImageListItem>
           });
 
