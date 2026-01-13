@@ -5,6 +5,9 @@ import ImageSelector from './ImageSelector'
 import { Box, Stack } from '@mui/material'
 import { StringParam, useQueryParam, withDefault, type QueryParamConfig } from 'use-query-params';
 import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select, { type SelectChangeEvent } from '@mui/material/Select';
 
 const DELTA_TIMES = ['7d', '2d', '1d', '6h'];
 
@@ -55,10 +58,6 @@ export interface ImageAndMetadata extends PanelMetadata {
   url: string;
 }
 
-import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select, { type SelectChangeEvent } from '@mui/material/Select';
 
 function InstrSelect() {
   const [instr, setInstr] = useQueryParam<Instr>('instr', withDefault(InstrParam, 'kcwi'));
