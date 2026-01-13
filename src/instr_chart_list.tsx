@@ -73,7 +73,17 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
                   />
                 </Box>
               )}
-              <ImageListItemBar title={panel.title} position="top" />
+              <ImageListItemBar 
+                title={panel.title} 
+                position="top"
+                sx={{
+                  height: '32px',
+                  '& .MuiImageListItemBar-title': {
+                    fontSize: '0.875rem',
+                    lineHeight: '32px',
+                  }
+                }}
+              />
             </ImageListItem>
           });
 
