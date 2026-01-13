@@ -11,13 +11,9 @@ const root = createRoot(
 root.render(
   <BrowserRouter>
     <QueryParamProvider adapter={ReactRouter6Adapter}>
-      <Routes>
-        <Route path="/" element={
-          <StrictMode>
-            <App />
-          </StrictMode>
-        }/>
-      </Routes>
+      <StrictMode>
+        <App />
+      </StrictMode>
     </QueryParamProvider>
   </BrowserRouter>,
 );
