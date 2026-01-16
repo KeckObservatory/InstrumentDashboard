@@ -34,7 +34,7 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
       {
         panels[instr].map((panelGroup, panelGroupIndex) => {
           const images = panelGroup.map((panel, index) => {
-            const imgUrl = `${BASE_URL}?panelId=${panel.panelId}&from=${timeRange}`;
+            const imgUrl = `${BASE_URL}?panelId=${panel.panelId}&from=now-${timeRange}`;
             const isLoaded = loadedImages.has(panel.panelId);
             const shouldLoad = index <= currentLoadingIndex;
 
