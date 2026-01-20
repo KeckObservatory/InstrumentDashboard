@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { panels, BASE_URL, type Instr, InstrParam } from './App';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
@@ -50,6 +50,20 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
               }}
               onClick={() => handleImageClick(imgUrl, panel.panelId)}
             >
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                  mb: 0.5,
+                  px: 0.5,
+                  py: 0.5,
+                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                  color: 'white'
+                }}
+              >
+                {panel.title}
+              </Typography>
               {!isLoaded && (
                 <Skeleton
                   variant="rectangular"
@@ -73,24 +87,13 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
                   />
                 </Box>
               )}
-              <ImageListItemBar 
-                title={panel.title} 
-                position="top"
-                sx={{
-                  height: '32px',
-                  '& .MuiImageListItemBar-title': {
-                    fontSize: '0.875rem',
-                    lineHeight: '32px',
-                  }
-                }}
-              />
             </ImageListItem>
           });
 
           const nCols = panelGroupIndex === 0 ? 3 : 2
           const height = panelGroupIndex === 0 ? 270 : 520
 
-          const imgList = <ImageList key={panelGroupIndex} sx={{ width: 1500, height }} cols={nCols} rowHeight={250}>
+          const imgList = <ImageList key={panelGroupIndex} sx={{ width: 1500, height }} cols={nCols} rowHeight={280}>
             {images}
           </ImageList>
           return imgList;
