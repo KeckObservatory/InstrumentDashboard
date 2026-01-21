@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Skeleton from '@mui/material/Skeleton';
@@ -17,6 +17,12 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
   const [ timeRange ] = useQueryParam('timeRange', withDefault(StringParam, '2d'));
   const [currentLoadingIndex, setCurrentLoadingIndex] = useState(0);
   const [instr] = useQueryParam<Instr>('instr', withDefault(InstrParam, 'kcwi'));
+
+  // Reset loaded images when timeRange changes
+  useEffect(() => {
+    setLoadedImages(new Set());
+    setCurrentLoadingIndex(0);
+  }, [timeRange]);
 
   const handleImageLoad = (panelId: number) => {
     setLoadedImages((prev: Set<number>) => new Set(prev).add(panelId));
@@ -62,7 +68,11 @@ export default function InstrChartList({ onImageClick }: InstrChartListProps) {
                   color: 'white'
                 }}
               >
-                {panel.title}
+                {!isLoaded ? (
+                  <>
+                    {panel.title} - <span style={{ "backgroundColor": 'yellow', 'color': 'black' }}>Loading...</span>
+                  </>
+                ) : panel.title}
               </Typography>
               {!isLoaded && (
                 <Skeleton
