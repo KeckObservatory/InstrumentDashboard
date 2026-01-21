@@ -15,8 +15,8 @@ export const BASE_URL = "/dashboards/kcwi-temps"
 const kcwipanels: PanelMetadata[][] = [
   [
     { 'title': 'Ecab Interior tmp7, rear tmp3', 'panelId': 25 },
-    { 'title': 'Blue Autofil Temps', 'panelId': 22 },
-    { 'title': 'Red Autofil Temps', 'panelId': 23 },
+    { 'title': 'Blue Autofill Temps', 'panelId': 22 },
+    { 'title': 'Red Autofill Temps', 'panelId': 23 },
   ],
   [
     { 'title': 'KRDS Red Detector Temp (target -125C)', 'panelId': 10 },
