@@ -11,7 +11,7 @@ import Select, { type SelectChangeEvent } from '@mui/material/Select';
 
 const DELTA_TIMES = ['7d', '2d', '1d', '6h'];
 
-export const BASE_URL = "https://www3build.keck.hawaii.edu/dashboards/kcwi-temps"
+export const BASE_URL = "/dashboards/kcwi-temps"
 const kcwipanels: PanelMetadata[][] = [
   [
     { 'title': 'Ecab Interior tmp7, rear tmp3', 'panelId': 25 },
